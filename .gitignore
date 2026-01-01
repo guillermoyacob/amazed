@@ -1,0 +1,32 @@
+# === PyInstaller (Local Build Files) ===
+build/
+dist/
+*.spec
+# Ignore standalone executables in the root directory
+*.exe
+
+# === Virtual Environments ===
+venv/
+.venv/
+env/
+ENV/
+bin/
+lib/
+include/
+
+# === Python Temporary Files ===
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# === System & IDE Metadata ===
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# === Local Media Downloads ===
+# Ignore the downloads folder to prevent personal test files from being committed
+downloads/
