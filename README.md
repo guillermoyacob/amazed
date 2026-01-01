@@ -37,12 +37,12 @@ Amazed is a high-performance, standalone, and portable desktop application built
 
 ### English
 1. Download the latest version from the [**Releases**](https://github.com/guillermoyacob/amazed/releases) section.
-2. Ensure `yt-dlp.exe`, `ffmpeg.exe`, and `ffprobe.exe` (and `icono.ico`) are in the same directory as `Amazed.exe`.
+2. Ensure `yt-dlp.exe`, `ffmpeg.exe`, and `ffprobe.exe` are in the same directory as `Amazed.exe`.
 3. Launch `Amazed.exe` and start downloading!
 
 ### Español
 1. Descarga la última versión desde la sección de [**Releases (Lanzamientos)**](https://github.com/guillermoyacob/amazed/releases).
-2. Asegúrate de que los archivos `yt-dlp.exe`, `ffmpeg.exe`, `ffprobe.exe` (y el archivo `icono.ico`) estén en el mismo directorio que `Amazed.exe`.
+2. Asegúrate de que los archivos `yt-dlp.exe`, `ffmpeg.exe`, `ffprobe.exe` estén en el mismo directorio que `Amazed.exe`.
 3. ¡Ejecuta `Amazed.exe` y comienza a descargar!
 
 ---
