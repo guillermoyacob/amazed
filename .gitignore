@@ -5,6 +5,11 @@ dist/
 # Ignore standalone executables in the root directory
 *.exe
 
+# === External Binaries ===
+yt-dlp.exe
+ffmpeg.exe
+ffprobe.exe
+
 # === Virtual Environments ===
 venv/
 .venv/
