@@ -32,7 +32,7 @@ class AmazedApp(ctk.CTk):
             os.makedirs(self.download_path)
 
         # 2. Configuración de Ventana e Icono
-        self.title("Amazed v1.0") # Versión agregada al título
+        self.title("Amazed v1.2") # Versión agregada al título
         self.geometry("620x240")
 
         # Bloquea el redimensionamiento: (Ancho, Alto)
@@ -42,8 +42,7 @@ class AmazedApp(ctk.CTk):
             self.iconbitmap(self.icon_path)
             if sys.platform == "win32":
                 import ctypes
-                # ID actualizado con tu nombre completo
-                ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID('guillermoyacob.amazed.v1.0')
+                ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID('guillermoyacob.amazed.v1.2')
 
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=0)
@@ -56,7 +55,7 @@ class AmazedApp(ctk.CTk):
         self.paste_button.grid(row=0, column=1, padx=(10, 20), pady=(20, 10), sticky="e")
 
         # --- FILA 1: Opciones y Download ---
-        self.options = ["Audio Standard MP3", "Audio Original Format", "Video Standard MP4", "Video Best Quality"]
+        self.options = ["Audio Standard MP3", "Audio Best Quality", "Video MP4 Full HD", "Video Best Quality"]
         self.option_menu = ctk.CTkOptionMenu(self, values=self.options, width=200)
         self.option_menu.grid(row=1, column=0, padx=20, pady=10, sticky="w")
 
@@ -65,7 +64,7 @@ class AmazedApp(ctk.CTk):
 
         # --- FILA 2: Créditos y Status ---
         # Créditos Guillermo Yacob
-        self.credits_label = ctk.CTkLabel(self, text="Desarrollado por Guillermo Yacob v1.0", font=("Arial", 10), text_color="gray50")
+        self.credits_label = ctk.CTkLabel(self, text="Desarrollado por Guillermo Yacob v1.2", font=("Arial", 10), text_color="gray50")
         self.credits_label.grid(row=2, column=0, padx=20, pady=(10, 20), sticky="sw")
 
         self.status_label = ctk.CTkLabel(self, text="Checking files...", text_color="gray")
@@ -105,10 +104,29 @@ class AmazedApp(ctk.CTk):
         cmd_base = [self.ytdlp_path, "--ffmpeg-location", self.base_path, "-o", output]
         
         commands = {
-            "Audio Standard MP3": cmd_base + ["-x", "--audio-format", "mp3", url],
-            "Audio Original Format": cmd_base + ["-f", "bestaudio", url],
-            "Video Standard MP4": cmd_base + ["--recode-video", "mp4", url],
-            "Video Best Quality": cmd_base + [url]
+            "Audio Standard MP3": cmd_base + [
+                "-x", "--audio-format", "mp3", 
+                "--embed-metadata", "--embed-thumbnail", "--embed-chapters",
+                url
+            ],
+
+            "Audio Best Quality": cmd_base + [
+                "-x", "--audio-format", "m4a",
+                "--audio-quality", "0",
+                "--embed-metadata", "--embed-thumbnail", "--embed-chapters",
+                url
+            ],
+
+            "Video MP4 Full HD": cmd_base + [
+                "-f", "bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best", 
+                "--embed-metadata", "--embed-thumbnail",
+                url
+            ],
+
+            "Video Best Quality": cmd_base + [
+                "--embed-metadata", "--embed-thumbnail", "--embed-chapters", "--embed-subs",
+                url
+            ]
         }
 
         try:

@@ -1,4 +1,4 @@
-# Amazed v1.0 - Portable Media Downloader
+# Amazed v1.2 - Portable Media Downloader
 ### Desarrollado por Guillermo Yacob | Developed by Guillermo Yacob
 
 Amazed is a high-performance, standalone, and portable desktop application built with **Python**. It simplifies media downloading and conversion with a focus on speed and user experience.
