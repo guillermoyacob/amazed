@@ -1,4 +1,5 @@
-# Amazed v1.2 - Portable Media Downloader
+# Amazed - Portable Media Downloader
+![Version](https://img.shields.io/badge/version-1.3.0-blue)
 ### Desarrollado por Guillermo Yacob | Developed by Guillermo Yacob
 
 Amazed is a high-performance, standalone, and portable desktop application built with **Python**. It simplifies media downloading and conversion with a focus on speed and user experience.
