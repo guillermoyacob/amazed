@@ -32,7 +32,7 @@ class AmazedApp(ctk.CTk):
             os.makedirs(self.download_path)
 
         # 2. Configuración de Ventana e Icono
-        self.title("Amazed v1.2") # Versión agregada al título
+        self.title("Amazed v1.3") # Versión agregada al título
         self.geometry("620x240")
 
         # Bloquea el redimensionamiento: (Ancho, Alto)
@@ -42,7 +42,7 @@ class AmazedApp(ctk.CTk):
             self.iconbitmap(self.icon_path)
             if sys.platform == "win32":
                 import ctypes
-                ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID('guillermoyacob.amazed.v1.2')
+                ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID('guillermoyacob.amazed.v1.3')
 
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=0)
@@ -64,7 +64,7 @@ class AmazedApp(ctk.CTk):
 
         # --- FILA 2: Créditos y Status ---
         # Créditos Guillermo Yacob
-        self.credits_label = ctk.CTkLabel(self, text="Desarrollado por Guillermo Yacob v1.2", font=("Arial", 10), text_color="gray50")
+        self.credits_label = ctk.CTkLabel(self, text="Desarrollado por Guillermo Yacob v1.3", font=("Arial", 10), text_color="gray50")
         self.credits_label.grid(row=2, column=0, padx=20, pady=(10, 20), sticky="sw")
 
         self.status_label = ctk.CTkLabel(self, text="Checking files...", text_color="gray")
@@ -102,11 +102,12 @@ class AmazedApp(ctk.CTk):
 
         output = os.path.join(self.download_path, "%(title)s.%(ext)s")
         cmd_base = [self.ytdlp_path, "--ffmpeg-location", self.base_path, "-o", output]
-        
+
         commands = {
             "Audio Standard MP3": cmd_base + [
                 "-x", "--audio-format", "mp3", 
                 "--embed-metadata", "--embed-thumbnail", "--embed-chapters",
+                "--sleep-interval", "5", "--max-sleep-interval", "15",
                 url
             ],
 
@@ -114,17 +115,22 @@ class AmazedApp(ctk.CTk):
                 "-x", "--audio-format", "m4a",
                 "--audio-quality", "0",
                 "--embed-metadata", "--embed-thumbnail", "--embed-chapters",
+                "--sleep-interval", "5", "--max-sleep-interval", "15",
                 url
             ],
 
             "Video MP4 Full HD": cmd_base + [
                 "-f", "bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best", 
-                "--embed-metadata", "--embed-thumbnail",
+                "--embed-metadata", "--embed-thumbnail", "--embed-chapters",
+                "--embed-subs", "--sub-langs", "es.*,en",
+                "--sleep-interval", "5", "--max-sleep-interval", "15",
                 url
             ],
 
             "Video Best Quality": cmd_base + [
-                "--embed-metadata", "--embed-thumbnail", "--embed-chapters", "--embed-subs",
+                "--embed-metadata", "--embed-thumbnail", "--embed-chapters", 
+                "--embed-subs", "--sub-langs", "es.*,en",
+                "--sleep-interval", "5", "--max-sleep-interval", "15",
                 url
             ]
         }
