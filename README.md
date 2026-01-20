@@ -71,5 +71,25 @@ This application acts as a graphical interface (GUI) and is not affiliated, asso
     * **yt-dlp**: Bajo [The Unlicense](https://unlicense.org/).
     * **FFmpeg & ffprobe**: Bajo [LGPL v2.1](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.html).
 
+
+(... aquí iría todo lo que ya pusimos de English/Español y el Badge ...)
+
+---
+
+## 🛠️ Development | Desarrollo
+To build the executable, you need **Python** and **PyInstaller**.
+Para compilar el ejecutable, necesitas **Python** y **PyInstaller**.
+
+1. **Install PyInstaller | Instalar PyInstaller:**
+```bash
+pip install pyinstaller
+```
+
+2. **Build the executable | Compilar el ejecutable:**
+
+```bash
+python -m PyInstaller --noconsole --onefile --icon="assets/icono.ico" --add-data "assets/icono.ico;." amazed.py
+```
+
 ---
 Desarrollado con 💙 por [Guillermo Yacob](https://github.com/guillermoyacob) - 2026
