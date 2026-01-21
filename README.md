@@ -1,5 +1,9 @@
 # Amazed - Portable Media Downloader
-![Version](https://img.shields.io/badge/version-1.3.0-blue)
+
+![Version](https://img.shields.io/github/v/release/guillermoyacob/amazed?label=version&color=blue)
+![Latest Downloads](https://img.shields.io/github/downloads/guillermoyacob/amazed/latest/total?label=latest%20downloads&color=orange)
+![Total Downloads](https://img.shields.io/github/downloads/guillermoyacob/amazed/total?label=total%20downloads&color=brightgreen)
+
 ### Desarrollado por Guillermo Yacob | Developed by Guillermo Yacob
 
 Amazed is a high-performance, standalone, and portable desktop application built with **Python**. It simplifies media downloading and conversion with a focus on speed and user experience.
