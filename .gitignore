@@ -1,23 +1,19 @@
 # === PyInstaller (Local Build Files) ===
-build/
-dist/
-*.spec
-# Ignore standalone executables in the root directory
-*.exe
+/build/
+/dist/
+/*.spec
+/*.exe
 
 # === External Binaries ===
-yt-dlp.exe
-ffmpeg.exe
-ffprobe.exe
+/yt-dlp.exe
+/ffmpeg.exe
+/ffprobe.exe
 
 # === Virtual Environments ===
-venv/
-.venv/
-env/
-ENV/
-bin/
-lib/
-include/
+/venv/
+/.venv/
+/env/
+/ENV/
 
 # === Python Temporary Files ===
 __pycache__/
@@ -33,5 +29,4 @@ Thumbs.db
 .idea/
 
 # === Local Media Downloads ===
-# Ignore the downloads folder to prevent personal test files from being committed
-downloads/
+/downloads/
