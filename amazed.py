@@ -1,24 +1,17 @@
-import customtkinter as ctk
-
-import threading
-
-import subprocess
-
+import ctypes
 import os
-
+import subprocess
 import sys
-
-import pyperclip
-
+import threading
 import tkinter.filedialog as filedialog
-
 from tkinter import messagebox
 
-import ctypes
+import customtkinter as ctk
 import psutil
+import pyperclip
+
 
 class AmazedApp(ctk.CTk):
-
     def __init__(self):
 
         super().__init__()
@@ -29,44 +22,33 @@ class AmazedApp(ctk.CTk):
 
         # ============================================================
 
-        if getattr(sys, 'frozen', False):
-
+        if getattr(sys, "frozen", False):
             self.base_path = os.path.dirname(sys.executable)
 
         else:
-
             self.base_path = os.path.dirname(os.path.abspath(__file__))
 
         self.download_path = os.path.join(self.base_path, "downloads")
 
         self.ytdlp_path = os.path.join(self.base_path, "yt-dlp.exe")
 
+        self.deno_path = os.path.join(self.base_path, "deno.exe")
+
         self.ffmpeg_path = os.path.join(self.base_path, "ffmpeg.exe")
 
         self.ffprobe_path = os.path.join(self.base_path, "ffprobe.exe")
 
-        if getattr(sys, 'frozen', False):
-
+        if getattr(sys, "frozen", False):
             self.icon_path = (
-
                 os.path.join(sys._MEIPASS, "icono.ico")
-
                 if hasattr(sys, "_MEIPASS")
-
                 else os.path.join(self.base_path, "icono.ico")
-
             )
 
         else:
-
-            self.icon_path = os.path.join(
-
-                self.base_path, "assets", "icono.ico"
-
-            )
+            self.icon_path = os.path.join(self.base_path, "assets", "icono.ico")
 
         if not os.path.exists(self.download_path):
-
             os.makedirs(self.download_path)
 
         # ============================================================
@@ -108,23 +90,17 @@ class AmazedApp(ctk.CTk):
 
         # ============================================================
 
-        self.title("Amazed v2.0")
+        self.title("Amazed v2.1")
 
-        self.geometry("620x260")
+        self.geometry("720x300")
 
         self.resizable(False, False)
 
         if os.path.exists(self.icon_path):
-
             self.iconbitmap(self.icon_path)
 
             if sys.platform == "win32":
-
-                ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(
-
-                    "amazed"
-
-                )
+                ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("amazed")
 
         self.grid_columnconfigure(0, weight=1)
 
@@ -139,19 +115,7 @@ class AmazedApp(ctk.CTk):
         self.url_frame = ctk.CTkFrame(self, fg_color="transparent")
 
         self.url_frame.grid(
-
-            row=0,
-
-            column=0,
-
-            columnspan=2,
-
-            padx=20,
-
-            pady=(20, 10),
-
-            sticky="ew"
-
+            row=0, column=0, columnspan=2, padx=20, pady=(20, 10), sticky="ew"
         )
 
         self.url_frame.grid_columnconfigure(0, weight=1)
@@ -159,44 +123,16 @@ class AmazedApp(ctk.CTk):
         self.url_frame.grid_columnconfigure(1, weight=0)
 
         self.url_entry = ctk.CTkEntry(
-
-            self.url_frame,
-
-            placeholder_text="Paste media URL here..."
-
+            self.url_frame, placeholder_text="Paste media URL here..."
         )
 
-        self.url_entry.grid(
-
-            row=0,
-
-            column=0,
-
-            padx=(0, 25),
-
-            sticky="ew"
-
-        )
+        self.url_entry.grid(row=0, column=0, padx=(0, 25), sticky="ew")
 
         self.paste_button = ctk.CTkButton(
-
-            self.url_frame,
-
-            text="Paste",
-
-            width=100,
-
-            command=self.paste_from_clipboard
-
+            self.url_frame, text="Paste", width=100, command=self.paste_from_clipboard
         )
 
-        self.paste_button.grid(
-
-            row=0,
-
-            column=1
-
-        )
+        self.paste_button.grid(row=0, column=1)
 
         # ============================================================
 
@@ -205,66 +141,21 @@ class AmazedApp(ctk.CTk):
         # ============================================================
 
         self.options = [
-
             "Audio Standard MP3",
-
             "Audio Best Quality",
-
             "Video MP4 Full HD",
-
-            "Video Best Quality"
-
+            "Video Best Quality",
         ]
 
-        self.option_menu = ctk.CTkOptionMenu(
+        self.option_menu = ctk.CTkOptionMenu(self, values=self.options, width=200)
 
-            self,
-
-            values=self.options,
-
-            width=200
-
-        )
-
-        self.option_menu.grid(
-
-            row=1,
-
-            column=0,
-
-            padx=20,
-
-            pady=10,
-
-            sticky="w"
-
-        )
+        self.option_menu.grid(row=1, column=0, padx=20, pady=10, sticky="w")
 
         self.download_button = ctk.CTkButton(
-
-            self,
-
-            text="Download",
-
-            width=100,
-
-            command=self.run_thread
-
+            self, text="Download", width=100, command=self.run_thread
         )
 
-        self.download_button.grid(
-
-            row=1,
-
-            column=1,
-
-            padx=20,
-
-            pady=10,
-
-            sticky="e"
-
-        )
+        self.download_button.grid(row=1, column=1, padx=20, pady=10, sticky="e")
 
         # ============================================================
 
@@ -273,54 +164,26 @@ class AmazedApp(ctk.CTk):
         # ============================================================
 
         self.folder_button = ctk.CTkButton(
-
-            self,
-
-            text="Choose folder",
-
-            width=130,
-
-            command=self.choose_download_folder
-
+            self, text="Choose folder", width=130, command=self.choose_download_folder
         )
 
-        self.folder_button.grid(
-
-            row=2,
-
-            column=0,
-
-            padx=20,
-
-            pady=10,
-
-            sticky="w"
-
-        )
+        self.folder_button.grid(row=2, column=0, padx=20, pady=10, sticky="w")
 
         self.download_path_label = ctk.CTkLabel(
-
             self,
-
-            text=self.download_path,
-
-            text_color="gray"
-
+            text=self.format_download_path(self.download_path),
+            text_color="gray",
+            width=300,
+            anchor="e",
         )
 
-        self.download_path_label.grid(
+        self.download_path_label.grid(row=2, column=1, padx=20, pady=10, sticky="e")
 
-            row=2,
+        self.download_path_label.bind("<Enter>", self.show_path_tooltip)
 
-            column=1,
+        self.download_path_label.bind("<Leave>", self.hide_path_tooltip)
 
-            padx=20,
-
-            pady=10,
-
-            sticky="e"
-
-        )
+        self.path_tooltip = None
 
         # ============================================================
 
@@ -329,110 +192,55 @@ class AmazedApp(ctk.CTk):
         # ============================================================
 
         self.update_button = ctk.CTkButton(
-
-            self,
-
-            text="Update yt-dlp",
-
-            width=130,
-
-            command=self.update_ytdlp
-
+            self, text="Update yt-dlp", width=130, command=self.update_ytdlp
         )
 
-        self.update_button.grid(
-
-            row=3,
-
-            column=0,
-
-            padx=20,
-
-            pady=10,
-
-            sticky="w"
-
-        )
+        self.update_button.grid(row=3, column=0, padx=20, pady=10, sticky="w")
 
         self.version_label = ctk.CTkLabel(
-
-            self,
-
-            text="yt-dlp: checking...",
-
-            text_color="gray"
-
+            self, text="yt-dlp: checking...", text_color="gray"
         )
 
-        self.version_label.grid(
-
-            row=3,
-
-            column=1,
-
-            padx=20,
-
-            pady=10,
-
-            sticky="e"
-
-        )
+        self.version_label.grid(row=3, column=1, padx=20, pady=10, sticky="e")
 
         # ============================================================
 
-        # FILA 4: CRÉDITOS + STATUS
+        # FILA 4: DENO
+
+        # ============================================================
+
+        self.update_deno_button = ctk.CTkButton(
+            self, text="Update Deno", width=130, command=self.update_deno
+        )
+
+        self.update_deno_button.grid(row=4, column=0, padx=20, pady=10, sticky="w")
+
+        self.deno_version_label = ctk.CTkLabel(
+            self, text="Deno: checking...", text_color="gray"
+        )
+
+        self.deno_version_label.grid(row=4, column=1, padx=20, pady=10, sticky="e")
+
+        # ============================================================
+
+        # FILA 5: CRÉDITOS + STATUS
 
         # ============================================================
 
         self.credits_label = ctk.CTkLabel(
-
             self,
-
             text="Desarrollado por Guillermo Yacob",
-
             font=("Arial", 10),
-
-            text_color="gray50"
-
+            text_color="gray50",
         )
 
-        self.credits_label.grid(
-
-            row=4,
-
-            column=0,
-
-            padx=20,
-
-            pady=(10, 5),
-
-            sticky="sw"
-
-        )
+        self.credits_label.grid(row=6, column=0, padx=20, pady=(10, 5), sticky="sw")
 
         self.status_label = ctk.CTkLabel(
-
-            self,
-
-            text="Checking files...",
-
-            text_color="gray"
-
+            self, text="Checking files...", text_color="gray"
         )
 
-        self.status_label.grid(
-
-            row=4,
-
-            column=1,
-
-            padx=20,
-
-            pady=(10, 5),
-
-            sticky="se"
-
-        )
+        self.status_label.grid(row=6, column=1, padx=20, pady=(10, 5), sticky="se")
 
         # ============================================================
 
@@ -443,6 +251,8 @@ class AmazedApp(ctk.CTk):
         self.check_required_files()
 
         self.get_ytdlp_version()
+
+        self.get_deno_version()
 
     # ================================================================
 
@@ -455,48 +265,30 @@ class AmazedApp(ctk.CTk):
         missing = []
 
         if not os.path.exists(self.ytdlp_path):
-
             missing.append("yt-dlp.exe")
 
         if not os.path.exists(self.ffmpeg_path):
-
             missing.append("ffmpeg.exe")
 
         if not os.path.exists(self.ffprobe_path):
-
             missing.append("ffprobe.exe")
 
+        if not os.path.exists(self.deno_path):
+            missing.append("deno.exe")
+
         if missing:
-
             self.status_label.configure(
-
-                text=f"Missing: {', '.join(missing)}",
-
-                text_color="red"
-
+                text=f"Missing: {', '.join(missing)}", text_color="red"
             )
 
             self.download_button.configure(state="disabled")
 
             self.update_button.configure(
-
-                state="disabled"
-
-                if "yt-dlp.exe" in missing
-
-                else "normal"
-
+                state="disabled" if "yt-dlp.exe" in missing else "normal"
             )
 
         else:
-
-            self.status_label.configure(
-
-                text="Ready",
-
-                text_color="gray"
-
-            )
+            self.status_label.configure(text="Ready", text_color="gray")
 
     # ================================================================
 
@@ -507,92 +299,48 @@ class AmazedApp(ctk.CTk):
     def get_ytdlp_version(self):
 
         if not os.path.exists(self.ytdlp_path):
-
-            self.version_label.configure(
-
-                text="yt-dlp: not found",
-
-                text_color="red"
-
-            )
+            self.version_label.configure(text="yt-dlp: not found", text_color="red")
 
             return
 
         def process():
 
             try:
-
                 result = subprocess.run(
-
                     [self.ytdlp_path, "--version"],
-
                     capture_output=True,
-
                     text=True,
-
                     creationflags=subprocess.CREATE_NO_WINDOW,
-
-                    shell=False
-
+                    shell=False,
                 )
 
                 version = result.stdout.strip()
 
                 if version:
-
                     self.after(
-
                         0,
-
                         lambda: self.version_label.configure(
-
-                            text=f"yt-dlp: {version}",
-
-                            text_color="gray"
-
-                        )
-
+                            text=f"yt-dlp: {version}", text_color="gray"
+                        ),
                     )
 
                 else:
-
                     self.after(
-
                         0,
-
                         lambda: self.version_label.configure(
-
-                            text="yt-dlp: unknown",
-
-                            text_color="orange"
-
-                        )
-
+                            text="yt-dlp: unknown", text_color="orange"
+                        ),
                     )
 
             except Exception:
-
                 self.after(
-
                     0,
-
                     lambda: self.version_label.configure(
-
-                        text="yt-dlp: error",
-
-                        text_color="red"
-
-                    )
-
+                        text="yt-dlp: error", text_color="red"
+                    ),
                 )
 
-        threading.Thread(
-
-            target=process,
-
-            daemon=True
-
-        ).start()
+        threading.Thread(target=process, daemon=True).start()
 
     # ================================================================
 
@@ -603,55 +351,31 @@ class AmazedApp(ctk.CTk):
     def update_ytdlp(self):
 
         if self.downloading:
-
             messagebox.showwarning(
-
                 "Download in progress",
-
-                "Please wait until the current download has finished."
-
+                "Please wait until the current download has finished.",
             )
 
             return
 
         if not os.path.exists(self.ytdlp_path):
-
-            messagebox.showerror(
-
-                "Error",
-
-                "yt-dlp.exe was not found."
-
-            )
+            messagebox.showerror("Error", "yt-dlp.exe was not found.")
 
             return
 
-        self.update_button.configure(
-
-            state="disabled",
-
-            text="Updating..."
-
-        )
+        self.update_button.configure(state="disabled", text="Updating...")
 
         def process():
 
             try:
-
                 # Obtener versión anterior
 
                 old_result = subprocess.run(
-
                     [self.ytdlp_path, "--version"],
-
                     capture_output=True,
-
                     text=True,
-
                     creationflags=subprocess.CREATE_NO_WINDOW,
-
-                    shell=False
-
+                    shell=False,
                 )
 
                 old_version = old_result.stdout.strip()
@@ -659,136 +383,79 @@ class AmazedApp(ctk.CTk):
                 # Ejecutar actualización nativa de yt-dlp
 
                 update_result = subprocess.run(
-
-                    [self.ytdlp_path, "-U"],
-
+                    [self.ytdlp_path, "--update-to", "nightly"],
                     capture_output=True,
-
                     text=True,
-
                     creationflags=subprocess.CREATE_NO_WINDOW,
-
-                    shell=False
-
+                    shell=False,
                 )
 
-                # Obtener versión actual después de -U
+                # Esto evita que Amazed informe que la actualización fue exitosa si el comando falló
+
+                if update_result.returncode != 0:
+                    details = (
+                        update_result.stderr.strip()
+                        or update_result.stdout.strip()
+                        or "Unknown error."
+                    )
+
+                    raise RuntimeError(details)
+
+                # Obtener versión actual después del update
 
                 new_result = subprocess.run(
-
                     [self.ytdlp_path, "--version"],
-
                     capture_output=True,
-
                     text=True,
-
                     creationflags=subprocess.CREATE_NO_WINDOW,
-
-                    shell=False
-
+                    shell=False,
                 )
 
                 new_version = new_result.stdout.strip()
 
                 if not new_version:
-
-                    raise Exception(
-
-                        "Could not determine the new yt-dlp version."
-
-                    )
+                    raise Exception("Could not determine the new yt-dlp version.")
 
                 # Actualizar etiqueta
 
                 self.after(
-
                     0,
-
                     lambda: self.version_label.configure(
-
-                        text=f"yt-dlp: {new_version}",
-
-                        text_color="gray"
-
-                    )
-
+                        text=f"yt-dlp: {new_version}", text_color="gray"
+                    ),
                 )
 
                 if old_version == new_version:
-
-                    message = (
-
-                        f"yt-dlp is already up to date.\n\n"
-
-                        f"Version: {new_version}"
-
-                    )
+                    message = f"yt-dlp is already up to date.\n\nVersion: {new_version}"
 
                 else:
-
                     message = (
-
                         f"yt-dlp was updated successfully.\n\n"
-
                         f"Previous version: {old_version}\n"
-
                         f"New version: {new_version}"
-
                     )
 
-                self.after(
-
-                    0,
-
-                    lambda: messagebox.showinfo(
-
-                        "yt-dlp update",
-
-                        message
-
-                    )
-
-                )
+                self.after(0, lambda: messagebox.showinfo("yt-dlp update", message))
 
             except Exception as e:
+                error_message = str(e)
 
                 self.after(
-
                     0,
-
-                    lambda: messagebox.showerror(
-
-                        "Update error",
-
-                        f"Could not update yt-dlp.\n\n{e}"
-
-                    )
-
+                    lambda msg=error_message: messagebox.showerror(
+                        "Update error", f"Could not update.\n\n{msg}"
+                    ),
                 )
 
             finally:
-
                 self.after(
-
                     0,
-
                     lambda: self.update_button.configure(
-
-                        state="normal",
-
-                        text="Update yt-dlp"
-
-                    )
-
+                        state="normal", text="Update yt-dlp"
+                    ),
                 )
 
-        threading.Thread(
-
-            target=process,
-
-            daemon=True
-
-        ).start()
+        threading.Thread(target=process, daemon=True).start()
 
     # ================================================================
 
@@ -799,13 +466,11 @@ class AmazedApp(ctk.CTk):
     def paste_from_clipboard(self):
 
         try:
-
             self.url_entry.delete(0, "end")
 
             self.url_entry.insert(0, pyperclip.paste())
 
         except Exception:
-
             pass
 
     # ================================================================
@@ -817,22 +482,74 @@ class AmazedApp(ctk.CTk):
     def choose_download_folder(self):
 
         folder = filedialog.askdirectory(
-
-            initialdir=self.download_path,
-
-            title="Choose download folder"
-
+            initialdir=self.download_path, title="Choose download folder"
         )
 
         if folder:
-
             self.download_path = folder
 
-            self.download_path_label.configure(
+            self.update_download_path_label()
 
-                text=self.download_path
+    # ================================================================
 
-            )
+    # VISUALIZACIÓN DE LA RUTA DE DESCARGA
+
+    # ================================================================
+
+    def format_download_path(self, path, max_length=60):
+
+        if len(path) <= max_length:
+            return path
+
+        return "..." + path[-(max_length - 3) :]
+
+    def update_download_path_label(self):
+
+        self.download_path_label.configure(
+            text=self.format_download_path(self.download_path)
+        )
+
+    def show_path_tooltip(self, event=None):
+
+        if self.path_tooltip is not None:
+            return
+
+        tooltip = ctk.CTkToplevel(self)
+
+        self.path_tooltip = tooltip
+
+        tooltip.overrideredirect(True)
+
+        tooltip.attributes("-topmost", True)
+
+        label = ctk.CTkLabel(
+            tooltip,
+            text=self.download_path,
+            corner_radius=6,
+            fg_color=("gray85", "gray20"),
+            text_color=("black", "white"),
+            padx=10,
+            pady=6,
+        )
+
+        label.pack()
+
+        x = self.download_path_label.winfo_rootx()
+
+        y = (
+            self.download_path_label.winfo_rooty()
+            + self.download_path_label.winfo_height()
+            + 4
+        )
+
+        tooltip.geometry(f"+{x}+{y}")
+
+    def hide_path_tooltip(self, event=None):
+
+        if self.path_tooltip is not None:
+            self.path_tooltip.destroy()
+
+            self.path_tooltip = None
 
     # ================================================================
 
@@ -843,15 +560,10 @@ class AmazedApp(ctk.CTk):
     def set_download_button_cancel(self):
 
         self.download_button.configure(
-
             text="Cancel",
-
             fg_color="orange",
-
             hover_color="#CC8400",
-
-            command=self.cancel_download
-
+            command=self.cancel_download,
         )
 
     # ================================================================
@@ -863,17 +575,11 @@ class AmazedApp(ctk.CTk):
     def set_download_button_download(self):
 
         self.download_button.configure(
-
             text="Download",
-
             fg_color=ctk.ThemeManager.theme["CTkButton"]["fg_color"],
-
             hover_color=ctk.ThemeManager.theme["CTkButton"]["hover_color"],
-
             command=self.run_thread,
-
-            state="normal"
-
+            state="normal",
         )
 
     # ================================================================
@@ -885,20 +591,12 @@ class AmazedApp(ctk.CTk):
     def run_thread(self):
 
         if self.downloading:
-
             return
 
         url = self.url_entry.get().strip()
 
         if not url:
-
-            self.status_label.configure(
-
-                text="Insert URL",
-
-                text_color="red"
-
-            )
+            self.status_label.configure(text="Insert URL", text_color="red")
 
             return
 
@@ -921,13 +619,7 @@ class AmazedApp(ctk.CTk):
         self.set_download_button_cancel()
 
         threading.Thread(
-
-            target=self.start_download,
-
-            args=(url, choice, download_path),
-
-            daemon=True
-
+            target=self.start_download, args=(url, choice, download_path), daemon=True
         ).start()
 
     # ================================================================
@@ -938,138 +630,99 @@ class AmazedApp(ctk.CTk):
 
     def start_download(self, url, choice, download_path):
 
+        log_file = None
+
         process = None
 
         return_code = None
 
-        error = None
-
-        output = os.path.join(
-
-            download_path,
-
-            "%(title)s.%(ext)s"
-
-        )
-
         cmd_base = [
-
             self.ytdlp_path,
-
             "--ffmpeg-location",
-
             self.base_path,
-
+            "--js-runtimes",
+            f"deno:{self.deno_path}",
             "-o",
-
-            output
-
+            os.path.join(self.download_path, "%(title)s.%(ext)s"),
         ]
 
         commands = {
-
-            "Audio Standard MP3": cmd_base + [
-
+            "Audio Standard MP3": cmd_base
+            + [
                 "-x",
-
-                "--audio-format", "mp3",
-
+                "--audio-format",
+                "mp3",
                 "--embed-metadata",
-
                 "--embed-thumbnail",
-
                 "--embed-chapters",
-
-                "--sleep-interval", "5",
-
-                "--max-sleep-interval", "15",
-
-                url
-
+                "--sleep-requests",
+                "1",
+                "--sleep-interval",
+                "5",
+                "--max-sleep-interval",
+                "15",
+                url,
             ],
-
-            "Audio Best Quality": cmd_base + [
-
+            "Audio Best Quality": cmd_base
+            + [
                 "-x",
-
-                "--audio-format", "m4a",
-
-                "--audio-quality", "0",
-
+                "--audio-format",
+                "m4a",
+                "--audio-quality",
+                "0",
                 "--embed-metadata",
-
                 "--embed-thumbnail",
-
                 "--embed-chapters",
-
-                "--sleep-interval", "5",
-
-                "--max-sleep-interval", "15",
-
-                url
-
+                "--sleep-requests",
+                "1",
+                "--sleep-interval",
+                "5",
+                "--max-sleep-interval",
+                "15",
+                url,
             ],
-
-            "Video MP4 Full HD": cmd_base + [
-
+            "Video MP4 Full HD": cmd_base
+            + [
                 "-f",
-
                 "bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best",
-
                 "--embed-metadata",
-
                 "--embed-thumbnail",
-
                 "--embed-chapters",
-
                 "--embed-subs",
-
-                "--sub-langs", "es.*,en",
-
-                "--sleep-interval", "5",
-
-                "--max-sleep-interval", "15",
-
-                url
-
+                "--sub-langs",
+                "es.*,en",
+                "--sleep-requests",
+                "1",
+                "--sleep-interval",
+                "5",
+                "--max-sleep-interval",
+                "15",
+                url,
             ],
-
-            "Video Best Quality": cmd_base + [
-
+            "Video Best Quality": cmd_base
+            + [
                 "--embed-metadata",
-
                 "--embed-thumbnail",
-
                 "--embed-chapters",
-
                 "--embed-subs",
-
-                "--sub-langs", "es.*,en",
-
-                "--sleep-interval", "5",
-
-                "--max-sleep-interval", "15",
-
-                url
-
-            ]
-
+                "--sub-langs",
+                "es.*,en",
+                "--sleep-requests",
+                "1",
+                "--sleep-interval",
+                "5",
+                "--max-sleep-interval",
+                "15",
+                url,
+            ],
         }
 
         try:
-
             self.after(
-
                 0,
-
                 lambda: self.status_label.configure(
-
-                    text="Downloading...",
-
-                    text_color="orange"
-
-                )
-
+                    text="Downloading...", text_color="orange"
+                ),
             )
 
             # Iniciar el proceso bajo protección del bloqueo.
@@ -1079,47 +732,34 @@ class AmazedApp(ctk.CTk):
             # el usuario ya solicitó cancelarla.
 
             with self.process_lock:
-
                 if not self.cancel_requested:
+                    log_path = os.path.join(self.base_path, "Amazed.log")
+                    log_file = open(log_path, "w", encoding="utf-8", errors="replace")
 
                     process = subprocess.Popen(
-
                         commands[choice],
-
                         creationflags=subprocess.CREATE_NO_WINDOW,
-
-                        shell=False
-
+                        shell=False,
+                        stdout=log_file,
+                        stderr=subprocess.STDOUT,
                     )
-
                     self.download_process = process
 
             if process is not None:
-
                 # Iniciar el control de tiempo
 
-                threading.Thread(
-
-                    target=self.monitor_download_time,
-
-                    daemon=True
-
-                ).start()
+                threading.Thread(target=self.monitor_download_time, daemon=True).start()
 
                 return_code = process.wait()
 
         except Exception as e:
-
-            error = e
+            pass
 
         finally:
-
             with self.process_lock:
-
                 was_cancelled = self.cancel_requested
 
                 if self.download_process is process:
-
                     self.download_process = None
 
                 self.downloading = False
@@ -1130,6 +770,9 @@ class AmazedApp(ctk.CTk):
 
                 self.warning_shown = False
 
+            if log_file is not None:
+                log_file.close()
+
             # Actualizar la interfaz desde el hilo principal
 
             def finish_download():
@@ -1137,34 +780,13 @@ class AmazedApp(ctk.CTk):
                 self.close_warning_window()
 
                 if return_code == 0:
-
-                    self.status_label.configure(
-
-                        text="Finished!",
-
-                        text_color="green"
-
-                    )
+                    self.status_label.configure(text="Finished!", text_color="green")
 
                 elif was_cancelled:
-
-                    self.status_label.configure(
-
-                        text="Cancelled",
-
-                        text_color="gray"
-
-                    )
+                    self.status_label.configure(text="Cancelled", text_color="gray")
 
                 else:
-
-                    self.status_label.configure(
-
-                        text="Error",
-
-                        text_color="red"
-
-                    )
+                    self.status_label.configure(text="Error", text_color="red")
 
                 self.set_download_button_download()
 
@@ -1203,7 +825,9 @@ class AmazedApp(ctk.CTk):
             interval = 300
 
     # ================================================================
+
     # PAUSAR / REANUDAR EL ÁRBOL DE PROCESOS
+
     # ================================================================
 
     def suspend_process_tree(self, pid):
@@ -1274,8 +898,8 @@ class AmazedApp(ctk.CTk):
                 lambda: messagebox.showerror(
                     "Pause error",
                     "Amazed could not pause the download processes. "
-                    "The download will continue."
-                )
+                    "The download will continue.",
+                ),
             )
             return "pause_failed"
 
@@ -1285,10 +909,7 @@ class AmazedApp(ctk.CTk):
 
         def create_warning_window():
             # Comprobar que la descarga siga activa antes de abrir el diálogo.
-            if (
-                not self.downloading
-                or self.monitor_stop_event.is_set()
-            ):
+            if not self.downloading or self.monitor_stop_event.is_set():
                 if not self.resume_process_tree():
                     self.cancel_download()
                 self.warning_event.set()
@@ -1305,18 +926,12 @@ class AmazedApp(ctk.CTk):
 
             label = ctk.CTkLabel(
                 warning,
-                text=(
-                    "The download is still running.\n\n"
-                    "Do you want to continue?"
-                ),
-                justify="center"
+                text=("The download is still running.\n\nDo you want to continue?"),
+                justify="center",
             )
             label.pack(padx=20, pady=(25, 15))
 
-            button_frame = ctk.CTkFrame(
-                warning,
-                fg_color="transparent"
-            )
+            button_frame = ctk.CTkFrame(warning, fg_color="transparent")
             button_frame.pack(pady=(15, 20))
 
             def continue_download():
@@ -1328,7 +943,7 @@ class AmazedApp(ctk.CTk):
                     messagebox.showerror(
                         "Resume error",
                         "Amazed could not resume all download processes. "
-                        "The download will be cancelled."
+                        "The download will be cancelled.",
                     )
                     return
 
@@ -1342,10 +957,7 @@ class AmazedApp(ctk.CTk):
                 self.cancel_download()
 
             continue_button = ctk.CTkButton(
-                button_frame,
-                text="Continue",
-                width=120,
-                command=continue_download
+                button_frame, text="Continue", width=120, command=continue_download
             )
             continue_button.grid(row=0, column=0, padx=10)
 
@@ -1355,7 +967,7 @@ class AmazedApp(ctk.CTk):
                 width=120,
                 fg_color="orange",
                 hover_color="#CC8400",
-                command=stop_download
+                command=stop_download,
             )
             stop_button.grid(row=0, column=1, padx=10)
 
@@ -1392,49 +1004,22 @@ class AmazedApp(ctk.CTk):
     def cancel_download(self):
 
         with self.process_lock:
-
             if not self.downloading:
-
                 return
 
             self.cancel_requested = True
 
             process = self.download_process
 
-        self.status_label.configure(
-
-            text="Cancelling...",
-
-            text_color="orange"
-
-        )
+        self.status_label.configure(text="Cancelling...", text_color="orange")
 
         if process is not None:
-
             try:
-
                 result = subprocess.run(
-
-                    [
-
-                        "taskkill",
-
-                        "/PID",
-
-                        str(process.pid),
-
-                        "/T",
-
-                        "/F"
-
-                    ],
-
+                    ["taskkill", "/PID", str(process.pid), "/T", "/F"],
                     capture_output=True,
-
                     creationflags=subprocess.CREATE_NO_WINDOW,
-
-                    shell=False
-
+                    shell=False,
                 )
 
                 # Si taskkill falla y yt-dlp sigue activo,
@@ -1442,19 +1027,14 @@ class AmazedApp(ctk.CTk):
                 # intentar terminar al menos el proceso principal.
 
                 if result.returncode != 0 and process.poll() is None:
-
                     process.kill()
 
             except Exception:
-
                 try:
-
                     if process.poll() is None:
-
                         process.kill()
 
                 except Exception:
-
                     pass
 
         # Despertar al monitor si estaba esperando
@@ -1463,6 +1043,151 @@ class AmazedApp(ctk.CTk):
 
         self.warning_event.set()
 
+    def get_deno_version(self):
+        if not os.path.exists(self.deno_path):
+            self.deno_version_label.configure(text="Deno: not found", text_color="red")
+            return
+
+        def process():
+            try:
+                result = subprocess.run(
+                    [self.deno_path, "--version"],
+                    capture_output=True,
+                    text=True,
+                    timeout=10,
+                    creationflags=subprocess.CREATE_NO_WINDOW,
+                    shell=False,
+                )
+
+                if result.returncode != 0:
+                    raise RuntimeError(result.stderr.strip() or "Version check failed.")
+
+                version = result.stdout.splitlines()[0].strip()
+
+                self.after(
+                    0,
+                    lambda: self.deno_version_label.configure(
+                        text=f"Deno: {version}", text_color="gray"
+                    ),
+                )
+
+            except Exception:
+                self.after(
+                    0,
+                    lambda: self.deno_version_label.configure(
+                        text="Deno: error", text_color="red"
+                    ),
+                )
+
+        threading.Thread(target=process, daemon=True).start()
+
+    # ================================================================
+
+    # ACTUALIZACIÓN DE DENO
+
+    # ================================================================
+
+    def update_deno(self):
+        if self.downloading:
+            messagebox.showwarning(
+                "Download in progress",
+                "Please wait until the current download has finished.",
+            )
+            return
+
+        if not os.path.exists(self.deno_path):
+            messagebox.showerror("Error", "deno.exe was not found.")
+            return
+
+        self.update_deno_button.configure(state="disabled", text="Updating...")
+
+        def process():
+            try:
+                old_result = subprocess.run(
+                    [self.deno_path, "--version"],
+                    capture_output=True,
+                    text=True,
+                    timeout=15,
+                    creationflags=subprocess.CREATE_NO_WINDOW,
+                    shell=False,
+                )
+
+                old_version = (
+                    old_result.stdout.splitlines()[0].strip()
+                    if old_result.returncode == 0 and old_result.stdout.strip()
+                    else "Unknown"
+                )
+
+                update_result = subprocess.run(
+                    [self.deno_path, "upgrade"],
+                    capture_output=True,
+                    text=True,
+                    timeout=180,
+                    creationflags=subprocess.CREATE_NO_WINDOW,
+                    shell=False,
+                )
+
+                if update_result.returncode != 0:
+                    details = (
+                        update_result.stderr.strip()
+                        or update_result.stdout.strip()
+                        or "Unknown error."
+                    )
+                    raise RuntimeError(details)
+
+                new_result = subprocess.run(
+                    [self.deno_path, "--version"],
+                    capture_output=True,
+                    text=True,
+                    timeout=15,
+                    creationflags=subprocess.CREATE_NO_WINDOW,
+                    shell=False,
+                )
+
+                if new_result.returncode != 0 or not new_result.stdout.strip():
+                    raise RuntimeError("Could not determine the Deno version.")
+
+                new_version = new_result.stdout.splitlines()[0].strip()
+
+                self.after(
+                    0,
+                    lambda: self.deno_version_label.configure(
+                        text=f"Deno: {new_version}", text_color="gray"
+                    ),
+                )
+
+                if old_version == new_version:
+                    message = f"Deno is already up to date.\n\nVersion: {new_version}"
+                else:
+                    message = (
+                        "Deno update completed.\n\n"
+                        f"Previous version: {old_version}\n"
+                        f"New version: {new_version}"
+                    )
+
+                self.after(0, lambda: messagebox.showinfo("Deno update", message))
+
+            except Exception as e:
+                error_message = str(e)
+
+                self.after(
+                    0,
+                    lambda msg=error_message: messagebox.showerror(
+                        "Update error", f"Could not update.\n\n{msg}"
+                    ),
+                )
+
+            finally:
+                self.after(
+                    0,
+                    lambda: self.update_deno_button.configure(
+                        state="normal", text="Update Deno"
+                    ),
+                )
+
+        threading.Thread(target=process, daemon=True).start()
+
+
 # ====================================================================
 
 # MAIN
@@ -1470,7 +1195,6 @@ class AmazedApp(ctk.CTk):
 # ====================================================================
 
 if __name__ == "__main__":
-
     app = AmazedApp()
 
     app.mainloop()
