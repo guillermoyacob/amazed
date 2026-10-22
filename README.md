@@ -88,6 +88,10 @@ python -m PyInstaller --noconsole --onefile --icon="assets/icono.ico" --add-data
 
 The executable will be created in the `dist` folder. The external tools `yt-dlp.exe`, `ffmpeg.exe` and `ffprobe.exe` are still required alongside the built executable for normal use.
 
+### Contributions
+
+Amazed is maintained independently. Suggestions and bug reports are welcome, but external code contributions and pull requests are not currently accepted.
+
 ### License
 
 The Amazed source code is licensed under the [MIT License](LICENSE).
@@ -183,6 +187,10 @@ python -m PyInstaller --noconsole --onefile --icon="assets/icono.ico" --add-data
 ```
 
 El ejecutable se creará en la carpeta `dist`. Para utilizarlo normalmente, también necesitarás los archivos externos `yt-dlp.exe`, `ffmpeg.exe` y `ffprobe.exe` junto al ejecutable compilado.
+
+### Contribuciones
+
+Amazed es mantenido de forma independiente. Las sugerencias y los informes de errores son bienvenidos, pero actualmente no se aceptan contribuciones de código externas ni pull requests.
 
 ### Licencia
 
